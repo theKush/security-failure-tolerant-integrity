@@ -1,0 +1,22 @@
+{
+  "name": "security-failure-tolerant-integrity",
+  "version": "1.0.0",
+  "description": "Security-Failure Tolerant Integrity in Interaction between Distributed Components",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theKush/security-failure-tolerant-integrity.git"
+  },
+  "author": "Kush Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theKush/security-failure-tolerant-integrity/issues"
+  },
+  "homepage": "https://github.com/theKush/security-failure-tolerant-integrity",
+  "dependencies": {
+    "express": "^4.11.2"
+  }
+}
