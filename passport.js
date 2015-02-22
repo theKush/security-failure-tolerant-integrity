@@ -2,11 +2,10 @@
 // here we will create strategies for passport to handle user login and authentication
 var LocalStrategy = require('passport-local').Strategy;
 var _ = require('lodash');
+var fs = require('fs');
 
 // user information, simple solution to not use mongodb
-var users = [
-    { id: 1, username: 'bob', password: 'password', email: 'bob@example.com' }
-];
+var users = JSON.parse(fs.readFileSync('./users.json', 'utf8'));
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
@@ -24,7 +23,6 @@ module.exports = function (passport) {
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
     	var user = _.find(users, function(chr) { return chr.id == id; });
-    	console.log('user', user);
     	done(null, user);
     });
 

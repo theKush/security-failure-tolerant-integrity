@@ -19,13 +19,14 @@ app.set('view engine', 'jade');		//our template engine is 'jade'
 // middlewares and configurations 
 app.use(morgan('dev'));		//log every request to the console
 app.use(express.static(path.join(__dirname, 'public')));	//serve all the files that are in public folder
-app.use(bodyParser.json());		
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({ 
 	secret: 'catsoninternet',
 	resave: false,
-	saveUninitialized: true 
+	saveUninitialized: true,
+	cookie: {httpOnly: false}
 }));
 
 app.use(passport.initialize());

@@ -17,3 +17,24 @@ html
           |  Profile Page
         |         
         a.btn.btn-default.btn-sm(href='/logout') Logout
+
+      form(id="algorithms", method="POST", action="/profile")
+          .checkbox
+            lable(for='plainhash') Plain Hash 
+            input(type='checkbox', name='algorithm', value="1")
+          .checkbox
+            lable(for='withkey') Hash with security key
+            input(type='checkbox', name='algorithm', value="2")
+          .checkbox
+            lable(for='withpki') Hash with security key enrypted by PKI
+            input(type='checkbox', name='algorithm', value="3")
+          .checkbox
+            lable(for='withpassword') Hash with Password as key
+            input(type='checkbox', name='algorithm', value="4")
+          .checkbox
+            lable(for='withsession') Hash with Session as key
+            input(type='checkbox', name='algorithm', value="5")
+          .checkbox
+            lable(for='twokeytwohash') Two different hash with two different keys
+            input(type='checkbox', name='algorithm', value="6")
+          button.btn.btn-warning.btn-lg(type="submit") Submit
