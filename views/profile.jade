@@ -1,40 +1,93 @@
 doctype html
 html
   head
-    title Node Authentication
-    |     
-    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
-    |     
-    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
-    |     
-    style.
-      body        { padding-top:80px; word-wrap:break-word; }
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    |   
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalabel=no')
+    |   
+    title CS6001 - Kush Patel
+    // CSS
+    link(href='/css/materialize.min.css', type='text/css', rel='stylesheet', media='screen,projection')
+    |   
+    link(href='/css/style.css', type='text/css', rel='stylesheet', media='screen,projection')
   body
+    nav.light-blue.lighten-1(role='navigation')
+      .container
+        .nav-wrapper
+          a#logo-container.brand-logo(href='#') CS 6001
+          |         
+          ul.right
+            li
+              a(href='/logout') Logout
+    |   
+    #index-banner.section.no-pad-bot
+      .container
+        br
+        br
+        |       
+        h1.header.center.orange-text Select Integrity Approaches
+        |             
+        br
+        br
+    |   
     .container
-      .page-header.text-center
-        h1
-          span.fa.fa-anchor
-          |  Profile Page
-        |         
-        a.btn.btn-default.btn-sm(href='/logout') Logout
-
-      form(id="algorithms", method="POST", action="/profile")
-          .checkbox
-            lable(for='plainhash') Plain Hash 
-            input(type='checkbox', name='algorithm', value="1")
-          .checkbox
-            lable(for='withkey') Hash with security key
-            input(type='checkbox', name='algorithm', value="2")
-          .checkbox
-            lable(for='withpki') Hash with security key enrypted by PKI
-            input(type='checkbox', name='algorithm', value="3")
-          .checkbox
-            lable(for='withpassword') Hash with Password as key
-            input(type='checkbox', name='algorithm', value="4")
-          .checkbox
-            lable(for='withsession') Hash with Session as key
-            input(type='checkbox', name='algorithm', value="5")
-          .checkbox
-            lable(for='twokeytwohash') Two different hash with two different keys
-            input(type='checkbox', name='algorithm', value="6")
-          button.btn.btn-warning.btn-lg(type="submit") Submit
+      .section
+        form(id="algorithms", method="POST", action="/profile")
+          p
+            input#plainhash(type='checkbox', name='algorithm', value="1")
+            label(for='plainhash') Plain Hash
+          p
+            input#withkey(type='checkbox', name='algorithm', value="2")
+            label(for='withkey') Hash with security key
+          p
+            input#withpki(type='checkbox', name='algorithm', value="3")
+            label(for='withpki') Hash with security key enrypted by PKI
+          p
+            input#withpassword(type='checkbox', name='algorithm', value="4")
+            label(for='withpassword') Hash with Password as key
+          p
+            input#withsession(type='checkbox', name='algorithm', value="5")
+            label(for='withsession') Hash with Session as key
+          p
+            input#twokeytwohash(type='checkbox', name='algorithm', value="6")
+            label(for='twokeytwohash') Two different hash with two different keys
+          button.btn.waves-effect.waves-light(type='submit', name='action')
+            | Submit
+            i.mdi-content-send.right
+      |  
+      br
+      br
+      |     
+      .section
+    |   
+    footer.page-footer.orange
+      .container
+        .row
+          .col.l6.s12
+            h5.white-text Created By:
+            |           
+            p.grey-text.text-lighten-4
+              | Kush Patel
+          |         
+          .col.l3.s12
+            
+          |         
+          .col.l3.s12
+  
+      |     
+      .footer-copyright
+        .container
+          | Theme by 
+          a.orange-text.text-lighten-3(href='http://materializecss.com') Materialize
+    // Scripts
+    script(src="/js/jquery-2.1.3.min.js")
+    |   
+    script(src='/js/materialize.js')
+    |   
+    script(src='/js/init.js')
+    script(type="text/javascript").
+      var checkboxes = $("input[type='checkbox']"),
+          submitButt = $("input[type='submit']");
+      checkboxes.click(function() {
+          submitButt.attr("disabled", !checkboxes.is(":checked"));
+      });

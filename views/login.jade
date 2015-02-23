@@ -1,24 +1,84 @@
 doctype html
 html
-	head
-		title Node Authentication     
-		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
-		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
-		style.
-			body        { padding-top:80px; }
-	body
-		.container
-			.col-sm-6.col-sm-offset-3
-				h1
-					span.fa.fa-sign-in Login
-				if message.length > 0
-					.alert.alert-danger
-						|	#{message}
-				form(id="login", method="POST", action="/login")
-					.form-group
-						lable(for='username') User Name
-						input.form-control#username(type='text', name='username')
-					.form-group
-						lable(for='password') Password
-						input.form-control#password(type='password', name='password')
-					button.btn.btn-warning.btn-lg(type="submit") Login
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    |   
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
+    |   
+    title CS6001 - Kush Patel
+    // CSS
+    link(href='/css/materialize.min.css', type='text/css', rel='stylesheet', media='screen,projection')
+    |   
+    link(href='/css/style.css', type='text/css', rel='stylesheet', media='screen,projection')
+  body
+    nav.light-blue.lighten-1(role='navigation')
+      .container
+        .nav-wrapper
+          a#logo-container.brand-logo(href='#') CS 6001
+    |   
+    #index-banner.section.no-pad-bot
+      .container
+        br
+        br
+        |       
+        h1.header.center.orange-text Login
+        |             
+        br
+        br
+    |   
+    .container
+      .section
+        .row
+          if message.length > 0
+            .col.s12
+              .card-panel.red
+                span.white-text
+                  | #{message}
+          form.col.s12(id="login", method="POST", action="/login")
+            .row
+              .input-field.col.s12
+                input#username.validate(type='text', name='username')
+                |         
+                label(for='username') Username
+            |     
+            .row
+              .input-field.col.s12
+                input#password.validate(type='password', name='password')
+                |         
+                label(for='password') Password
+            |     
+            .row
+              button.btn.waves-effect.waves-light(type='submit', name='action')
+                | Submit
+                i.mdi-content-send.right   
+      |     
+      br
+      br
+      |     
+      .section
+    |   
+    footer.page-footer.orange
+      .container
+        .row
+          .col.l6.s12
+            h5.white-text Created By:
+            |           
+            p.grey-text.text-lighten-4
+              | Kush Patel
+          |         
+          .col.l3.s12
+            
+          |         
+          .col.l3.s12
+  
+      |     
+      .footer-copyright
+        .container
+          | Theme by 
+          a.orange-text.text-lighten-3(href='http://materializecss.com') Materialize
+    // Scripts
+    script(src="/js/jquery-2.1.3.min.js")
+    |   
+    script(src='/js/materialize.js')
+    |   
+    script(src='/js/init.js')
