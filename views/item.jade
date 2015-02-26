@@ -14,7 +14,7 @@ html
     nav.light-blue.lighten-1(role='navigation')
       .container
         .nav-wrapper
-          a#logo-container.brand-logo(href='#') CS 6001
+          a#logo-container.brand-logo(href='/') CS 6001
           ul.right
             li
               a(href='/logout') Logout
@@ -58,23 +58,90 @@ html
                   if algorithms.indexOf('6') !== -1
                     | Two different hash with two different keys
                     br
-          form(id="item", method="POST", action="/item")
-            .row
-              .input-field.col.s12
-                textarea.materialize-textarea(id="message" name="message")
-                |         
-                label(for='message') Message
-            if algorithms.indexOf('4') !== -1     
+        
+        .row
+          .col.s12
+            form(id="item", method="POST", action="/item")
+              .row
+                .col.s12.m6.l4
+                  .card
+                    .card-image.waves-effect.waves-block.waves-light
+                      img.activator(src='images/nexus9.png')
+                    |         
+                    .card-content
+                      span.card-title.activator.grey-text.text-darken-4
+                        | Nexus 9 
+                        i.mdi-navigation-more-vert.right
+                      |           
+                      p
+                        input#nexus9(name="nexuses", type="radio" required)
+                        label(for="nexus9") $399.00
+                    |         
+                    .card-reveal
+                      span.card-title.grey-text.text-darken-4
+                        | Nexus 9 
+                        i.mdi-navigation-close.right
+                      |           
+                      p
+                        | Nexus 9 is the new tablet from Google. Powered by Android™5.0 Lollipop, Nexus 9 is for work and play, with its just-right 8.9-inch screen and front-facing stereo speakers.
+                .col.s12.m6.l4
+                  .card
+                    .card-image.waves-effect.waves-block.waves-light
+                      img.activator(src='images/nexus6.png')
+                    |         
+                    .card-content
+                      span.card-title.activator.grey-text.text-darken-4
+                        | Nexus 6 
+                        i.mdi-navigation-more-vert.right
+                      |           
+                      p
+                        input#nexus6(name="nexuses", type="radio" required)
+                        label(for="nexus6") $699.00
+                    |         
+                    .card-reveal
+                      span.card-title.grey-text.text-darken-4
+                        | Nexus 6 
+                        i.mdi-navigation-close.right
+                      |           
+                      p
+                        | Versatile 6-inch Quad HD display is great for movies, videos, gaming, e-books, and surfing the web, with round-the-clock battery life.
+                .col.s12.m6.l4
+                  .card
+                    .card-image.waves-effect.waves-block.waves-light
+                      img.activator(src='images/nexus5.png')
+                    |         
+                    .card-content
+                      span.card-title.activator.grey-text.text-darken-4
+                        | Nexus 5 
+                        i.mdi-navigation-more-vert.right
+                      |           
+                      p
+                        input#nexus5(name="nexuses", type="radio" required)
+                        label(for="nexus5") $399.00
+                    |         
+                    .card-reveal
+                      span.card-title.grey-text.text-darken-4
+                        | Nexus 5 
+                        i.mdi-navigation-close.right
+                      |           
+                      p
+                        | Nexus 5 helps you capture the everyday and the epic in fresh new ways. It's the slimmest and fastest Nexus phone ever made, powered by Android™ 4.4, KitKat®.
               .row
                 .input-field.col.s12
-                  input#password.validate(type='password', name='password')
+                  textarea.materialize-textarea(id="message" name="message" required)
                   |         
-                  label(for='password') Password
-            |     
-            .row
-              button.btn.waves-effect.waves-light(type='submit', name='action')
-                | Buy
-                i.mdi-content-send.right   
+                  label(for='message') Message
+              if algorithms.indexOf('4') !== -1     
+                .row
+                  .input-field.col.s12
+                    input#password.validate(type='password', name='password')
+                    |         
+                    label(for='password') Password
+              |     
+              .row
+                button.btn.waves-effect.waves-light(type='submit', name='action')
+                  | Buy
+                  i.mdi-content-send.right   
       |     
       br
       br
@@ -113,13 +180,13 @@ html
       var req = new XMLHttpRequest();
       req.open('GET', document.location, false);
       req.send(null);
-      var startTime = Date.now();
       var crypt = new JSEncrypt();
       var key1 = req.getResponseHeader('key1');
       var key2 = req.getResponseHeader('key2'); 
       var pubkey = req.getResponseHeader('pubkey');
       $("#item").submit(function(e) {
         e.preventDefault();
+        var startTime = Date.now();
         var serialized = $('form').serialize();
 
         req.open('POST', '/item', true);

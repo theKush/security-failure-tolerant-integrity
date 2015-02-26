@@ -92,6 +92,7 @@ module.exports = function(app, passport) {
         var startTime, endTime;
         req.on('data', function(data){
             body += data;
+
             startTime = Date.now();
             if (_.indexOf(algorithms, '1') !== -1) {
                 plainHash = checkPlainHash(ALGORITHM1, body, req.headers.plainhash);
