@@ -37,7 +37,7 @@ app.use(flash());
 require('./routes.js')(app, passport);	// load our routes and pass in our app and passport configurations
 
 // launch our server
-var server = app.listen(3000, function () {
+var server = app.listen(process.env.PORT || 3000, function () {
 
   var host = server.address().address
   var port = server.address().port
