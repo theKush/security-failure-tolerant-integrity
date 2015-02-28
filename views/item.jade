@@ -232,6 +232,7 @@ html
         var processingTime = endTime - startTime;
         req.onreadystatechange = function() {
           if(req.readyState == 4 && req.status == 200) {
+            console.log(req.responseText);
             alert(req.responseText + "\n Client Processing Time: " + processingTime + " msec");
           }
         }

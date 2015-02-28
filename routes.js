@@ -10,7 +10,7 @@ var qs = require('querystring');
 module.exports = function(app, passport) {
     var algorithms = [];
     var verificationMessage = "";
-    var processingTime = "";
+    var processingTime = 0.0;
     var ALGORITHM1 = 'sha1';
     var ALGORITHM2 = 'md5';
     var KEY1 = 'key1';
@@ -128,7 +128,7 @@ module.exports = function(app, passport) {
         });
         
         processingTime = endTime - startTime;
-        console.log(processingTime);
+        console.log(processingTime.toString());
         res.end(verificationMessage.concat("Server Prossecing Time: " + processingTime.toString() + " msec"));
     });
 
