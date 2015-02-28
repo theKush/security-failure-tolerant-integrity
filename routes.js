@@ -96,39 +96,39 @@ module.exports = function(app, passport) {
             startTime = Date.now();
             if (_.indexOf(algorithms, '1') !== -1) {
                 plainHash = checkPlainHash(ALGORITHM1, body, req.headers.plainhash);
-                verificationMessage = "Plain Hash verified: " + plainHash + "\n";
+                verificationMessage.concat("Plain Hash verified: " + plainHash + "\n");
             }
             if (_.indexOf(algorithms, '2') !== -1) {
                 keyHash = checkKeyHash(ALGORITHM1, KEY1, body, req.headers.keyhash);
-                verificationMessage = verificationMessage + "Hash with security key verified: " + keyHash + "\n";
+                verificationMessage.concat("Hash with security key verified: " + keyHash + "\n");
             }
             if (_.indexOf(algorithms, '3') !== -1) {
                 var symkey = jsencrypt.decrypt(req.headers.symkey);
                 pkiHash = checkPkiHash(ALGORITHM1, symkey, body, req.headers.pkihash);
-                verificationMessage = verificationMessage + "Hash with PKI encryption verified: " + pkiHash + "\n";
+                verificationMessage.concat("Hash with PKI encryption verified: " + pkiHash + "\n");
             }
             if (_.indexOf(algorithms, '4') !== -1) {
                 var post = qs.parse(body);
                 if(req.user.password == post.password) {
                     passwordHash = checkPasswordHash(ALGORITHM1, post.password, body, req.headers.passwordhash);
-                    verificationMessage = verificationMessage + "Hash with Password key verified: " + passwordHash + "\n";
+                    verificationMessage.concat("Hash with Password key verified: " + passwordHash + "\n");
                 } else {
                     res.end("password incorrect");
                 }
             }
             if (_.indexOf(algorithms, '5') !== -1) {
                 sessionHash = checkSessionHash(ALGORITHM1, req.sessionID, body, req.headers.sessionhash);
-                verificationMessage = verificationMessage + "Hash with Session verified: " + sessionHash + "\n";
+                verificationMessage.concat("Hash with Session verified: " + sessionHash + "\n");
             }
             if (_.indexOf(algorithms, '6') !== -1) {
                 twoHash = checkTwoHash(ALGORITHM1, ALGORITHM2, KEY1, KEY2, body, req.headers.firsthash, req.headers.secondhash);
-                verificationMessage = verificationMessage + "Hash with 2 Hash, 2 Key verified: " + twoHash + "\n";
+                verificationMessage.concat("Hash with 2 Hash, 2 Key verified: " + twoHash + "\n");
             }
             endTime = Date.now();
         });
         
         processingTime = endTime - startTime;
-        console.log(processingTime.toString());
+        console.log(processingTime);
         res.end(verificationMessage.concat("Server Prossecing Time: " + processingTime.toString() + " msec"));
     });
 
