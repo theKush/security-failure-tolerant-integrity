@@ -126,7 +126,7 @@ module.exports = function(app, passport) {
             }
             endTime = Date.now();
         });
-        
+        console.log(verficationMessage);
         processingTime = endTime - startTime;
         console.log(processingTime);
         res.end(verificationMessage.concat("Server Prossecing Time: " + processingTime.toString() + " msec"));
