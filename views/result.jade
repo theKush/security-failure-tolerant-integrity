@@ -1,0 +1,98 @@
+doctype html
+html
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    |   
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
+    |   
+    title CS6001 - Kush Patel
+    // CSS
+    link(href='/css/materialize.min.css', type='text/css', rel='stylesheet', media='screen,projection')
+    |   
+    link(href='/css/style.css', type='text/css', rel='stylesheet', media='screen,projection')
+  body
+    nav.light-blue.lighten-1(role='navigation')
+      .container
+        .nav-wrapper
+          a#logo-container.brand-logo(href='/') CS 6001
+    |   
+    #index-banner.section.no-pad-bot
+      .container
+        br
+        br
+        |       
+        h1.header.center.orange-text Results
+        |             
+        br
+        br
+    |   
+    .container
+      .section
+        a.btn-floating.btn-large.waves-effect.waves-light.red(href="/profile")
+          i.mdi-navigation-arrow-back
+        .row
+          if plainhash
+            .col.s12
+              .card-panel.green
+                span.white-text
+                  | Plain Hash verified
+          if keyhash
+            .col.s12
+              .card-panel.green
+                span.white-text
+                  | Hash with security key verified
+          if pkihash
+            .col.s12
+              .card-panel.green
+                span.white-text
+                  | Hash with PKI encryption verified
+          if passwordhash
+            .col.s12
+              .card-panel.green
+                span.white-text
+                  | Hash with Password key verified
+          if sessionhash
+            .col.s12
+              .card-panel.green
+                span.white-text
+                  | Hash with Session verified
+          if twohash
+            .col.s12
+              .card-panel.green
+                span.white-text
+                  | Hash with 2 Hash, 2 Key verified
+          .col.s12
+              .card-panel.grey
+                span.white-text
+                  | Total Processing Time: #{time}
+      |     
+      br
+      br
+      |     
+      .section
+    |   
+    footer.page-footer.orange
+      .container
+        .row
+          .col.l6.s12
+            h5.white-text Created By:
+            |           
+            p.grey-text.text-lighten-4
+              | Kush Patel
+          |         
+          .col.l3.s12
+            
+          |         
+          .col.l3.s12
+  
+      |     
+      .footer-copyright
+        .container
+          | Theme by 
+          a.orange-text.text-lighten-3(href='http://materializecss.com') Materialize
+    // Scripts
+    script(src="/js/jquery-2.1.3.min.js")
+    |   
+    script(src='/js/materialize.js')
+    |   
+    script(src='/js/init.js')
