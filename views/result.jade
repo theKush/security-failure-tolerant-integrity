@@ -15,6 +15,9 @@ html
       .container
         .nav-wrapper
           a#logo-container.brand-logo(href='/') CS 6001
+          ul.right
+            li
+              a(href='/logout') Logout
     |   
     #index-banner.section.no-pad-bot
       .container
@@ -31,40 +34,57 @@ html
         a.btn-floating.btn-large.waves-effect.waves-light.red(href="/profile")
           i.mdi-navigation-arrow-back
         .row
-          if plainhash
-            .col.s12
-              .card-panel.green
-                span.white-text
-                  | Plain Hash verified
-          if keyhash
-            .col.s12
-              .card-panel.green
-                span.white-text
-                  | Hash with security key verified
-          if pkihash
-            .col.s12
-              .card-panel.green
-                span.white-text
-                  | Hash with PKI encryption verified
-          if passwordhash
-            .col.s12
-              .card-panel.green
-                span.white-text
-                  | Hash with Password key verified
-          if sessionhash
-            .col.s12
-              .card-panel.green
-                span.white-text
-                  | Hash with Session verified
-          if twohash
-            .col.s12
-              .card-panel.green
-                span.white-text
-                  | Hash with 2 Hash, 2 Key verified
+          table.striped
+            thead
+              tr
+                td 
+                  strong Algorithms
+                td 
+                  strong Verified
+            tbody
+              if algorithms.indexOf('1') !== -1
+                tr
+                  td Plain Hash
+                  td 
+                    | #{plainhash}
+              if algorithms.indexOf('2') !== -1
+                tr
+                  td Hash with security key
+                  td
+                    | #{keyhash}
+              if algorithms.indexOf('3') !== -1
+                tr
+                  td Hash with security key enrypted by PKI
+                  td
+                    | #{pkihash}
+              if algorithms.indexOf('4') !== -1
+                tr
+                  td Hash with Password
+                  td
+                    | #{passwordhash}
+              if algorithms.indexOf('5') !== -1
+                tr
+                  td Hash with Session
+                  td
+                    | #{sessionhash}
+              if algorithms.indexOf('6') !== -1
+                tr
+                  td Two different hash with two different keys
+                  td
+                    | #{twohash}
+        .row
           .col.s12
-              .card-panel.grey
-                span.white-text
-                  | Total Processing Time: #{time}
+            .card-panel.grey
+              span.white-text
+                | Client Processing Time: #{clienttime} msec
+          .col.s12
+            .card-panel.grey
+              span.white-text
+                | Server Processing Time: #{servertime} msec
+          .col.s12
+            .card-panel.green.lighten-1
+              span.white-text
+                | Total Time: #{time} msec
       |     
       br
       br

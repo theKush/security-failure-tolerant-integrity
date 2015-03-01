@@ -8,27 +8,27 @@ var users = JSON.parse(fs.readFileSync('./users.json', 'utf8'));
 var qs = require('querystring');
 
 module.exports = function(app, passport) {
-    var algorithms = [];
-    var verificationMessage = "";
-    var processingTime = 0.0;
-    var ALGORITHM1 = 'sha1';
-    var ALGORITHM2 = 'md5';
-    var KEY1 = 'key1';
-    var KEY2 = 'key2';
-    var publicKey = jsencrypt.getPublicKey();
-    var privateKey = jsencrypt.getPrivateKey();
+    var algorithms = [];    //array of algorithms that we will run checks on
+    var serverTime = 0.0;   //server processing time;
+    var clientTime = "";        //the client's preocessing time we recieved 
+    var ALGORITHM1 = 'sha1';    //our primary algorithm
+    var ALGORITHM2 = 'md5';     //our secondary algorithm used in 2key approach
+    var KEY1 = 'key1';          //our first key
+    var KEY2 = 'key2';          //our second key
+    var publicKey = jsencrypt.getPublicKey();       //public key for encryption
+    var privateKey = jsencrypt.getPrivateKey();     //private key for decryption
     var plainHash = false, 
         keyHash = false, 
         pkiHash = false, 
         passwordHash = false, 
         sessionHash = false, 
-        twoHash = false; 
+        twoHash = false;    //set all the integrity checks default to false
 
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('index.jade'); // load the index.ejs file
+        res.render('index.jade'); // load the index.jade file
     });
 
     // =====================================
@@ -36,7 +36,6 @@ module.exports = function(app, passport) {
     // =====================================
     // show the login form
     app.get('/login', function(req, res) {
-
         // render the page and pass in any flash data if it exists
         res.render('login.jade', { message: req.flash('loginMessage') });
     });
@@ -49,7 +48,7 @@ module.exports = function(app, passport) {
     }));
 
     // =====================================
-    // PROFILE SECTION =====================
+    // Algorithm selection Section =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
@@ -60,7 +59,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/profile', isLoggedIn, function(req, res) {
-        algorithms = req.body.algorithm;
+        algorithms = req.body.algorithm;    //the algorithms that the user selected to run integrity checks on
         //console.log(algorithms);
         res.redirect('/item');
     });
@@ -71,20 +70,19 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/item', isLoggedIn, function(req, res) {
-        //
+        // key1 is needed in algorithms 2 and 6
         if (_.indexOf(algorithms, '2') !== -1 || _.indexOf(algorithms, '6') !== -1) {
             res.setHeader('key1', KEY1);
             
-            //
+            //key2 is also needed in algorithm 6
             if (_.indexOf(algorithms, '6') !== -1) {
                 res.setHeader('key2', KEY2);
             }
         }
+        //public key is need in algorithm 3 from encryption
         if (_.indexOf(algorithms, '3') !== -1) {
             res.setHeader('pubkey', publicKey);
         }
-
-        verificationMessage = "";
         
         res.render('item.jade', {
             algorithms: algorithms
@@ -92,66 +90,77 @@ module.exports = function(app, passport) {
     });
 
     app.post('/item', isLoggedIn, function(req, res) {
-        var body = "";
-        verificationMessage = "";
-        var startTime, endTime;
-        req.on('data', function(data){
-            body += data;
+        var body = "";      //storing data recieved from client here
+        //set all check values to false 
+        plainHash = false; 
+        keyHash = false; 
+        pkiHash = false; 
+        passwordHash = false; 
+        sessionHash = false; 
+        twoHash = false; 
+        var startTime, endTime;     //store start and end times for performance checking
 
-            startTime = Date.now();
+        //once we recieved data start performing integrity checks
+        req.on('data', function(data){
+            body += data;   //store data we recieved in body
+            startTime = Date.now();     //get the start time
+
+            //user selected plain hash
             if (_.indexOf(algorithms, '1') !== -1) {
                 plainHash = checkPlainHash(ALGORITHM1, body, req.headers.plainhash);
-                //verificationMessage.concat("Plain Hash verified: " + plainHash + "\n");
             }
+            //user selected hash with security key
             if (_.indexOf(algorithms, '2') !== -1) {
                 keyHash = checkKeyHash(ALGORITHM1, KEY1, body, req.headers.keyhash);
-                //verificationMessage.concat("Hash with security key verified: " + keyHash + "\n");
             }
+            //user selected hash with pki enrpyption
             if (_.indexOf(algorithms, '3') !== -1) {
                 var symkey = jsencrypt.decrypt(req.headers.symkey);
                 pkiHash = checkPkiHash(ALGORITHM1, symkey, body, req.headers.pkihash);
-                //verificationMessage.concat("Hash with PKI encryption verified: " + pkiHash + "\n");
             }
+            //user selected hash with password
             if (_.indexOf(algorithms, '4') !== -1) {
                 var post = qs.parse(body);
+                // check if user entered password is correct
                 if(req.user.password == post.password) {
                     passwordHash = checkPasswordHash(ALGORITHM1, post.password, body, req.headers.passwordhash);
-                    //verificationMessage.concat("Hash with Password key verified: " + passwordHash + "\n");
                 } else {
-                    res.end("password incorrect");
+                    res.end('0');  //else send password incorrect
                 }
             }
+            //user selected hash with session
             if (_.indexOf(algorithms, '5') !== -1) {
                 sessionHash = checkSessionHash(ALGORITHM1, req.sessionID, body, req.headers.sessionhash);
-                //verificationMessage.concat("Hash with Session verified: " + sessionHash + "\n");
             }
+            //user selected hash with 2 key 2 hash
             if (_.indexOf(algorithms, '6') !== -1) {
                 twoHash = checkTwoHash(ALGORITHM1, ALGORITHM2, KEY1, KEY2, body, req.headers.firsthash, req.headers.secondhash);
-                //verificationMessage.concat("Hash with 2 Hash, 2 Key verified: " + twoHash + "\n");
             }
-            endTime = Date.now();
+            endTime = Date.now();       //get the end time
         });
-        var post = qs.parse(body);
-        
-        processingTime = endTime - startTime;
-        //console.log(processingTime);
-        res.redirect('/result');
-        //res.end(verificationMessage.concat("Server Prossecing Time: " + processingTime.toString() + " msec"));
+
+        processingTime = parseFloat(endTime - startTime);   //calculate time taken
+        clientTime = parseFloat(req.headers.clienttime);    //get the client's time
+
+        res.end('1');    //go to results page 
     });
 
     // =====================================
     // RESULT ==============================
     // =====================================
-    app.get('/result', function(req, res) {
+    app.get('/result', isLoggedIn, function(req, res) {
         res.render('result.jade', {
-            user : req.user, // get the user out of session and pass to template
+            // send the results to render them 
+            algorithms : algorithms, 
             plainhash: plainHash,
             keyhash: keyHash, 
             pkihash: pkiHash, 
             passwordhash: passwordHash, 
             sessionhash: sessionHash, 
             twohash: twoHash,
-            time: processingTime.toString()
+            servertime: processingTime.toString(),
+            clienttime: clientTime.toString(),
+            time: parseFloat(processingTime + clientTime)
         });
     });
     // =====================================
