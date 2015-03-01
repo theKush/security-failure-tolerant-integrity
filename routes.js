@@ -122,7 +122,7 @@ module.exports = function(app, passport) {
             if (_.indexOf(algorithms, '4') !== -1) {
                 var post = qs.parse(body);
                 // check if user entered password is correct
-                if(req.user.password == post.password) {
+                if(String(req.user.password) == String(post.password)) {
                     passwordHash = checkPasswordHash(ALGORITHM1, post.password, body, req.headers.passwordhash);
                 } else {
                     res.end('0');  //else send password incorrect

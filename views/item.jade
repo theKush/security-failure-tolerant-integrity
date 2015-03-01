@@ -127,18 +127,18 @@ html
                       p
                         | Nexus 5 helps you capture the everyday and the epic in fresh new ways. It's the slimmest and fastest Nexus phone ever made, powered by Android™ 4.4, KitKat®.
               .row
+                if algorithms.indexOf('4') !== -1     
+                  .row
+                    .input-field.col.s12
+                      input#password.validate(type='password', name='password')
+                      |         
+                      label(for='password') Password
+                |     
                 .input-field.col.s12
-                  textarea.materialize-textarea(id="message" name="message" required)
+                  textarea.materialize-textarea(id="message" name="message" autocomplete="off" spellcheck="false" required)
                   |         
                   label(for='message') Message
 
-              if algorithms.indexOf('4') !== -1     
-                .row
-                  .input-field.col.s12
-                    input#password.validate(type='password', name='password')
-                    |         
-                    label(for='password') Password
-              |     
               .row
                 button.btn.waves-effect.waves-light(type='submit', name='action')
                   | Buy
@@ -240,7 +240,7 @@ html
               alert('Password Incorrect');
             }
             else if(req.responseText == '1') {
-              window.location.replace("http://integrity-kushproject.rhcloud.com/result");
+              window.location.replace("http://localhost:8080/result");
             }
           }
         }
