@@ -23,6 +23,7 @@ module.exports = function(app, passport) {
         passwordHash = false, 
         sessionHash = false, 
         twoHash = false;    //set all the integrity checks default to false
+    var networkTime = 0.0;
 
     // =====================================
     // HOME PAGE (with login links) ========
@@ -103,8 +104,8 @@ module.exports = function(app, passport) {
         //once we recieved data start performing integrity checks
         req.on('data', function(data){
             body += data;   //store data we recieved in body
-            startTime = Date.now();     //get the start time
-
+            startTime = Date.now();     //get the start time for server processing
+            networkTime = parseFloat(startTime - req.headers.networkstart);
             //user selected plain hash
             if (_.indexOf(algorithms, '1') !== -1) {
                 plainHash = checkPlainHash(ALGORITHM1, body, req.headers.plainhash);
@@ -160,7 +161,8 @@ module.exports = function(app, passport) {
             twohash: twoHash,
             servertime: processingTime.toString(),
             clienttime: clientTime.toString(),
-            time: parseFloat(processingTime + clientTime)
+            networktime: networkTime.toString(),
+            time: parseFloat(processingTime + clientTime + networkTime)
         });
     });
     // =====================================
