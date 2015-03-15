@@ -1,4 +1,5 @@
 // routes.js
+process.env.TZ = 'America/Chicago';
 // here we do routing of all the pages and their GET and POST requests.
 var _ = require('lodash');
 var crypto = require('crypto');
@@ -138,9 +139,10 @@ module.exports = function(app, passport) {
                 twoHash = checkTwoHash(ALGORITHM1, ALGORITHM2, KEY1, KEY2, body, req.headers.firsthash, req.headers.secondhash);
             }
             endTime = Date.now();       //get the end time
+            processingTime = parseFloat(endTime - startTime);   //calculate time taken
         });
 
-        processingTime = parseFloat(endTime - startTime);   //calculate time taken
+        
         clientTime = parseFloat(req.headers.clienttime);    //get the client's time
 
         res.end('1');    //go to results page 
