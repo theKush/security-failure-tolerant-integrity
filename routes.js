@@ -1,4 +1,5 @@
 // routes.js
+process.env.TZ = 'America/Chicago';
 // here we do routing of all the pages and their GET and POST requests.
 var _ = require('lodash');
 var crypto = require('crypto');
